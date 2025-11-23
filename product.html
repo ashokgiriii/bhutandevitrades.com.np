@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Details | Bhutandevi Traders</title>
+    <meta
+      name="description"
+      content="View product details and order motorcycle spare parts from Bhutandevi Traders"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/premium.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container"></div>
+      <nav>
+        <div class="container nav-container">
+          <div class="category-nav">
+            <a href="index.html" class="category-item">
+              <i class="fas fa-home"></i> Home
+            </a>
+            <a href="categories.html" class="category-item">
+              <i class="fas fa-th-large"></i> Categories
+            </a>
+            <a href="bike-parts.html" class="category-item">
+              <i class="fas fa-motorcycle"></i> Bike Parts
+            </a>
+            <a href="scooter-parts.html" class="category-item">
+              <i class="fas fa-scooter"></i> Scooter Parts
+            </a>
+            <a href="#contact" class="category-item">
+              <i class="fas fa-phone"></i> Contact
+            </a>
+          </div>
+          <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Search for parts..."
+            />
+            <button
+              class="search-btn"
+              onclick="performSearch(document.querySelector('.search-bar input').value)"
+            >
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Product Detail Section -->
+    <section class="product-detail-section">
+      <div class="container">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb" id="productBreadcrumb">
+          <a href="index.html">Home</a>
+          <i class="fas fa-chevron-right"></i>
+          <a href="categories.html">Categories</a>
+          <i class="fas fa-chevron-right"></i>
+          <span id="productCategoryLink"></span>
+          <i class="fas fa-chevron-right"></i>
+          <span id="productNameBreadcrumb">Product</span>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Loading product details...</p>
+        </div>
+
+        <!-- Product Detail Container -->
+        <div id="productDetailContainer" class="product-detail-container" style="display: none;">
+          <div class="product-detail-grid">
+            <!-- Product Image -->
+            <div class="product-image-section">
+              <div class="product-main-image" id="productMainImage">
+                <i class="fas fa-cogs fa-5x"></i>
+              </div>
+              <div class="stock-badge-large" id="stockBadge">
+                <i class="fas fa-check-circle"></i>
+                <span>In Stock</span>
+              </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info-section">
+              <h1 id="productName">Product Name</h1>
+              <div class="product-meta">
+                <span class="product-brand" id="productBrand">Brand</span>
+                <span class="product-model" id="productModel">Model</span>
+                <span class="product-category" id="productCategory">Category</span>
+              </div>
+              
+              <div class="product-price-large">
+                <span class="price-label">Price:</span>
+                <span class="price-amount" id="productPrice">Rs. 0</span>
+              </div>
+
+              <div class="product-description-full" id="productDescription">
+                <h3>Description</h3>
+                <p>Product description will be loaded here...</p>
+              </div>
+
+              <!-- Quantity Selector -->
+              <div class="quantity-section">
+                <label>Quantity:</label>
+                <div class="quantity-selector-large">
+                  <button class="quantity-btn minus" id="quantityMinus">-</button>
+                  <input type="number" class="quantity-input-large" id="quantityInput" value="1" min="1" />
+                  <button class="quantity-btn plus" id="quantityPlus">+</button>
+                </div>
+                <div class="total-price-display">
+                  <strong>Total: <span id="totalPrice">Rs. 0</span></strong>
+                </div>
+              </div>
+
+              <!-- QR Code Payment Section -->
+              <div class="qr-payment-section">
+                <h3 class="qr-section-title">
+                  <i class="fas fa-qrcode"></i> Scan to Pay
+                </h3>
+                <div class="qr-code-display-container">
+                  <div id="qrcode" class="qr-code-display-inline"></div>
+                  <div class="qr-code-info">
+                    <p class="qr-total-amount">Total: <strong id="qrTotalPrice">Rs. 0</strong></p>
+                    <p class="qr-payment-methods">
+                      <span class="payment-badge">eSewa</span>
+                      <span class="payment-badge">Khalti</span>
+                      <span class="payment-badge">IME Pay</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="product-actions-compact">
+                <button class="btn-compact btn-whatsapp-compact" id="whatsappBtn">
+                  <i class="fab fa-whatsapp"></i>
+                  <span>WhatsApp</span>
+                </button>
+                <button class="btn-compact btn-call-compact" id="callBtn">
+                  <i class="fas fa-phone"></i>
+                  <span>Call</span>
+                </button>
+              </div>
+
+              <!-- Product Features -->
+              <div class="product-features-section" id="productFeatures" style="display: none;">
+                <h3>Features</h3>
+                <div class="features-list" id="featuresList"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Related Products -->
+          <div class="related-products-section">
+            <h2>Related Products</h2>
+            <div class="products-grid" id="relatedProductsContainer">
+              <!-- Related products will be loaded here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="error-state" style="display: none;">
+          <i class="fas fa-exclamation-triangle fa-3x"></i>
+          <h3>Product Not Found</h3>
+          <p>The product you're looking for doesn't exist or has been removed.</p>
+          <a href="index.html" class="cta-button primary">
+            <i class="fas fa-home"></i> Go to Homepage
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-column">
+            <div class="footer-logo">
+              <i class="fas fa-motorcycle fa-2x"></i>
+              <div>
+                <h3>Bhutandevi Traders</h3>
+                <p>
+                  Your trusted partner for genuine motorcycle spare parts in
+                  Hetauda
+                </p>
+              </div>
+            </div>
+            <p class="footer-description">
+              Serving Hetauda community with quality motorcycle parts since
+              2010. We provide genuine parts with free delivery in Hetauda area.
+            </p>
+            <div class="social-links">
+              <a
+                href="https://facebook.com/bhutandevitraders"
+                class="social-link"
+              >
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="https://wa.me/9779841000000" class="social-link">
+                <i class="fab fa-whatsapp"></i>
+              </a>
+              <a href="tel:+9779841000000" class="social-link">
+                <i class="fas fa-phone"></i>
+              </a>
+              <a
+                href="mailto:info@bhutandevitraders.com.np"
+                class="social-link"
+              >
+                <i class="fas fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li>
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+              </li>
+              <li>
+                <a href="categories.html"
+                  ><i class="fas fa-th-large"></i> Categories</a
+                >
+              </li>
+              <li>
+                <a href="bike-parts.html"
+                  ><i class="fas fa-motorcycle"></i> Bike Parts</a
+                >
+              </li>
+              <li>
+                <a href="scooter-parts.html"
+                  ><i class="fas fa-scooter"></i> Scooter Parts</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Contact Info</h3>
+            <ul class="footer-links">
+              <li>
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Hetauda, Makwanpur<br />Nepal</span>
+              </li>
+              <li>
+                <i class="fas fa-phone"></i>
+                <div>
+                  <a href="tel:+9779841000000">9841XXXXXX (Primary)</a>
+                  <a href="tel:+9779841000001">9841XXXXXX (Secondary)</a>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-envelope"></i>
+                <a href="mailto:info@bhutandevitraders.com.np"
+                  >info@bhutandevitraders.com.np</a
+                >
+              </li>
+              <li>
+                <i class="fas fa-clock"></i>
+                <span
+                  >Sun-Fri: 9:00 AM - 6:00 PM<br />Sat: 10:00 AM - 4:00 PM</span
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Service Areas</h3>
+            <div class="service-areas">
+              <span>Hetauda Main City</span>
+              <span>Manahari</span>
+              <span>Bhimphedi</span>
+              <span>Makwanpur Gadhi</span>
+              <span>Thaha</span>
+              <span>Raksirang</span>
+              <span>Bakaiya</span>
+            </div>
+            <div class="delivery-info">
+              <i class="fas fa-truck"></i>
+              <strong>Free Delivery in Hetauda</strong>
+              <p>For orders above Rs. 500</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div class="copyright">
+            <p>
+              &copy; 2023 Bhutandevi Traders. All rights reserved. |
+              bhutandevitraders.com.np
+            </p>
+          </div>
+          <div class="footer-notes">
+            <p>🏍️ Trusted Motorcycle Parts Supplier in Hetauda</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-actions">
+      <a
+        href="https://wa.me/9779841000000"
+        class="whatsapp-float"
+        target="_blank"
+        title="Chat on WhatsApp"
+      >
+        <i class="fab fa-whatsapp"></i>
+        <span class="float-text">Chat Now</span>
+      </a>
+
+      <a href="tel:+9779841000000" class="call-float" title="Call Now">
+        <i class="fas fa-phone"></i>
+        <span class="float-text">Call Now</span>
+      </a>
+
+      <button class="scroll-to-top" title="Scroll to Top">
+        <i class="fas fa-chevron-up"></i>
+      </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/premium.js"></script>
+    <script src="js/product-detail.js"></script>
+  </body>
+</html>
+

@@ -217,13 +217,6 @@ function renderProducts(products, container) {
         return;
     }
 
-    // Show loading skeleton
-    if (window.LoadingManager) {
-        window.LoadingManager.show(container, true);
-    }
-
-    // Use setTimeout to allow skeleton to render
-    setTimeout(() => {
     container.innerHTML = '';
 
     if (products.length === 0) {
@@ -235,9 +228,6 @@ function renderProducts(products, container) {
                 <button class="cta-button" onclick="clearSearch()">Show All Products</button>
             </div>
         `;
-            if (window.LoadingManager) {
-                window.LoadingManager.hide(container);
-            }
         return;
     }
 
@@ -245,12 +235,13 @@ function renderProducts(products, container) {
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
         productCard.setAttribute('data-product-id', product.id);
-        productCard.style.cursor = 'pointer';
 
         productCard.innerHTML = `
             <div class="product-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                ${product.image && product.image !== '' ? `<img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;" />` : '<i class="fas fa-cogs fa-3x"></i>'}
+                <i class="fas fa-cogs fa-3x"></i>
                 ${product.inStock ? '<span class="stock-badge">In Stock</span>' : '<span class="stock-badge out-of-stock">Out of Stock</span>'}
+                    <i class="fas fa-star"></i>
+                </div>
             </div>
             <div class="product-details">
                 <h3 class="product-name">${product.name}</h3>
@@ -264,20 +255,20 @@ function renderProducts(products, container) {
                 
                 <div class="product-price">Rs. ${product.price.toLocaleString()}</div>
                 <div class="quantity-selector">
-                    <button class="quantity-btn minus" ${!product.inStock ? 'disabled' : ''} onclick="event.stopPropagation()">-</button>
-                    <input type="text" class="quantity-input" value="1" readonly ${!product.inStock ? 'disabled' : ''} onclick="event.stopPropagation()">
-                    <button class="quantity-btn plus" ${!product.inStock ? 'disabled' : ''} onclick="event.stopPropagation()">+</button>
+                    <button class="quantity-btn minus" ${!product.inStock ? 'disabled' : ''}>-</button>
+                    <input type="text" class="quantity-input" value="1" readonly ${!product.inStock ? 'disabled' : ''}>
+                    <button class="quantity-btn plus" ${!product.inStock ? 'disabled' : ''}>+</button>
                 </div>
                 <div class="product-actions">
                     <div class="action-buttons">
-                        <button class="btn btn-whatsapp" data-product="${product.name}" data-price="${product.price}" ${!product.inStock ? 'disabled' : ''} onclick="event.stopPropagation(); sendWhatsAppOrderFromCard(${product.id}, this)">
+                        <button class="btn btn-whatsapp" data-product="${product.name}" data-price="${product.price}" ${!product.inStock ? 'disabled' : ''}>
                             <i class="fab fa-whatsapp"></i> WhatsApp
                         </button>
-                        <button class="btn btn-payment" data-product="${product.name}" data-price="${product.price}" ${!product.inStock ? 'disabled' : ''} onclick="event.stopPropagation(); openPaymentModalFromCard(${product.id}, this)">
+                        <button class="btn btn-payment" data-product="${product.name}" data-price="${product.price}" ${!product.inStock ? 'disabled' : ''}>
                             <i class="fas fa-qrcode"></i> Pay
                         </button>
                     </div>
-                    <button class="call-now-small" onclick="event.stopPropagation(); callForProduct('${product.name.replace(/'/g, "\\'")}')" ${!product.inStock ? 'disabled' : ''}>
+                    <button class="call-now-small" onclick="callForProduct('${product.name.replace(/'/g, "\\'")}')" ${!product.inStock ? 'disabled' : ''}>
                         <i class="fas fa-phone"></i> Call Now
                     </button>
                 </div>
@@ -286,31 +277,11 @@ function renderProducts(products, container) {
 
         container.appendChild(productCard);
 
-        // Add click event to navigate to product detail page
-        productCard.addEventListener('click', function(e) {
-            // Don't navigate if clicking on buttons or inputs
-            if (e.target.closest('button') || e.target.closest('input') || e.target.closest('.product-actions')) {
-                return;
-            }
-            window.location.href = `product.html?id=${product.id}`;
-        });
-
         // Add event listeners only if product is in stock
         if (product.inStock) {
             addProductEventListeners(productCard, product);
         }
     });
-
-        // Hide loading and trigger animations
-        if (window.LoadingManager) {
-            window.LoadingManager.hide(container);
-        }
-        
-        // Re-initialize scroll animations for new products
-        if (window.initScrollAnimations) {
-            setTimeout(() => window.initScrollAnimations(), 100);
-        }
-    }, 300);
 }
 
 // Function to add event listeners to product elements
@@ -388,9 +359,7 @@ function addProductEventListeners(productCard, product) {
 
     // Payment button
     const paymentBtn = productCard.querySelector('.btn-payment');
-    paymentBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+    paymentBtn.addEventListener('click', () => {
         const quantity = quantityInput.value;
         const total = product.price * quantity;
         openPaymentModal(product.name, total, product.image);
@@ -417,23 +386,12 @@ Please confirm availability and delivery details.`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
-    // Show toast notification
-    if (window.Toast) {
-        window.Toast.show('Opening WhatsApp...', 'info', 2000);
-    }
-
     window.open(whatsappUrl, '_blank');
 }
 
 // Function to call for product
 function callForProduct(productName) {
     const phoneNumber = '+9779841000000'; // Replace with actual number
-    
-    // Show toast notification
-    if (window.Toast) {
-        window.Toast.show(`Calling for: ${productName}`, 'info', 2000);
-    }
-    
     window.open(`tel:${phoneNumber}`);
 
     // Track call intent (optional)
@@ -575,409 +533,102 @@ function updateProductStock(productId, inStock) {
 
 // Function to open payment modal with QR code
 function openPaymentModal(productName, total, productImage = null) {
-    // Remove any existing modal first
-    const existingModal = document.getElementById('payment-modal');
-    if (existingModal) {
-        existingModal.remove();
-    }
-    
-    // Prevent event bubbling from the button that triggered this
-    if (window.event) {
-        window.event.stopPropagation();
-    }
-
-    // Create modal
-    const modal = document.createElement('div');
+    // Create modal if it doesn't exist
+    let modal = document.getElementById('payment-modal');
+    if (!modal) {
+        modal = document.createElement('div');
         modal.id = 'payment-modal';
         modal.className = 'modal';
         modal.style.cssText = `
-        display: flex;
-        align-items: center;
-        justify-content: center;
+            display: none;
             position: fixed;
-        z-index: 10000;
+            z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-        background-color: rgba(0,0,0,0.85);
-        backdrop-filter: blur(8px);
-        opacity: 0;
-        transition: opacity 0.3s ease;
+            background-color: rgba(0,0,0,0.4);
         `;
+        document.body.appendChild(modal);
+    }
 
     // Create modal content
-    const modalContent = document.createElement('div');
-    modalContent.className = 'modal-content payment-modal-content';
-    modalContent.style.cssText = `
+    const modalContent = `
+  <div class="modal-content" style="
     background-color: white;
     margin: 5% auto;
-        padding: 0;
+    padding: 20px;
+    border: 1px solid #888;
     width: 90%;
-        max-width: 550px;
-        max-height: 95vh;
-        border-radius: 16px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    max-width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     text-align: center;
-        overflow-y: auto;
-        position: relative;
-        transform: scale(0.9);
-        transition: transform 0.3s ease;
-    `;
-
-    modalContent.innerHTML = `
-        <button class="close-modal" onclick="closePaymentModal()" style="
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--light);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+  ">
+  
+    <span class="close" style="
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
       cursor: pointer;
-            font-size: 1.3rem;
-            color: var(--gray);
-            z-index: 10;
-            transition: all 0.3s ease;
-        ">
-            <i class="fas fa-times"></i>
-        </button>
-        
-        <div class="payment-modal-body" style="padding: 30px;">
-            <div class="payment-header">
-                <h2 class="modal-title" style="
-                    font-size: 1.8rem;
-                    color: var(--secondary);
-                    margin-bottom: 8px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 12px;
-                ">
-                    <i class="fas fa-qrcode" style="color: var(--primary);"></i> Payment Details
-                </h2>
-                <p class="payment-subtitle" style="color: var(--gray); font-size: 0.95rem; margin: 0;">Scan QR code to pay securely</p>
-            </div>
-            
-            <div class="payment-details-card" style="
-                background: var(--light);
-                border-radius: var(--radius);
-                padding: 20px;
-                margin: 25px 0;
-                border-left: 4px solid var(--primary);
-            ">
-                <div class="payment-item" style="
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 12px 0;
-                    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-                ">
-                    <span class="payment-label" style="color: var(--gray); font-weight: 500;">Product:</span>
-                    <span class="payment-value" style="color: var(--secondary); font-weight: 600;">${productName}</span>
-                </div>
-                <div class="payment-item payment-total" style="
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 15px 0;
-                    margin-top: 10px;
-                    border-top: 2px solid var(--primary);
-                    font-size: 1.2rem;
-                ">
-                    <span class="payment-label" style="color: var(--gray); font-weight: 500;">Total Amount:</span>
-                    <span class="payment-value" style="color: var(--primary); font-size: 1.5rem; font-weight: 700;">Rs. ${total.toLocaleString()}</span>
-                </div>
+    " onclick="closePaymentModal()">&times;</span>
+
+    <h2 style="margin-top: 0; color: var(--primary);">Payment Details</h2>
+
+    <div style="color: black; margin-top: 10px;">
+      <p><strong>Product:</strong> ${productName}</p>
+      <p><strong>Total Amount:</strong> Rs. ${total.toLocaleString()}</p>
     </div>
 
-            <div class="qr-code-section" style="text-align: center; margin: 25px 0;">
-                <div class="qr-code-wrapper" style="
-                    background: white;
-                    padding: 25px;
-                    border-radius: var(--radius);
-                    border: 2px solid var(--light);
-                    margin-bottom: 20px;
-                    display: inline-block;
-                ">
-                    <div id="payment-qrcode" class="qr-code-display" style="
-                        width: 280px;
-                        height: 280px;
-                        margin: 0 auto;
-                        background: white;
-                        border-radius: var(--radius);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        border: 3px solid var(--primary);
-                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                    "></div>
-                    <div class="qr-code-label" style="
-                        margin-top: 15px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        gap: 8px;
-                        color: var(--secondary);
-                        font-weight: 500;
-                    ">
-                        <i class="fas fa-mobile-alt" style="color: var(--primary);"></i>
-                        <span>Scan with your payment app</span>
-                    </div>
-                </div>
-                <div class="payment-methods" style="margin-top: 20px;">
-                    <p class="payment-methods-title" style="font-size: 0.9rem; color: var(--gray); margin-bottom: 12px;">Accepted Payment Methods:</p>
-                    <div class="payment-methods-list" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-                        <span class="payment-method-badge" style="
-                            background: var(--light);
-                            color: var(--primary);
-                            padding: 8px 16px;
-                            border-radius: 20px;
-                            font-size: 0.85rem;
-                            font-weight: 600;
-                            border: 2px solid var(--primary);
-                        ">eSewa</span>
-                        <span class="payment-method-badge" style="
-                            background: var(--light);
-                            color: var(--primary);
-                            padding: 8px 16px;
-                            border-radius: 20px;
-                            font-size: 0.85rem;
-                            font-weight: 600;
-                            border: 2px solid var(--primary);
-                        ">Khalti</span>
-                        <span class="payment-method-badge" style="
-                            background: var(--light);
-                            color: var(--primary);
-                            padding: 8px 16px;
-                            border-radius: 20px;
-                            font-size: 0.85rem;
-                            font-weight: 600;
-                            border: 2px solid var(--primary);
-                        ">IME Pay</span>
-                        <span class="payment-method-badge" style="
-                            background: var(--light);
-                            color: var(--primary);
-                            padding: 8px 16px;
-                            border-radius: 20px;
-                            font-size: 0.85rem;
-                            font-weight: 600;
-                            border: 2px solid var(--primary);
-                        ">Connect IPS</span>
-                    </div>
-                </div>
-            </div>
+    <div style="margin: 30px 0;">
+      <p style="margin-bottom: 15px; font-weight: bold;">Scan to Pay</p>
 
-            <div class="payment-instructions-card" style="
-                background: linear-gradient(135deg, var(--light) 0%, #f8f9fa 100%);
-                border-radius: var(--radius);
-                padding: 20px;
-                margin: 25px 0;
-                border-left: 4px solid var(--accent);
-            ">
-                <h4 style="
-                    color: var(--secondary);
-                    margin-bottom: 15px;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    font-size: 1.1rem;
-                ">
-                    <i class="fas fa-info-circle" style="color: var(--accent);"></i> After Payment:
-                </h4>
-                <ol class="payment-steps" style="margin: 0; padding-left: 20px; color: var(--dark);">
-                    <li style="margin-bottom: 10px; line-height: 1.6;">Take a screenshot of your payment confirmation</li>
-                    <li style="margin-bottom: 10px; line-height: 1.6;">Send it to us via WhatsApp</li>
-                    <li style="line-height: 1.6;">We'll confirm and arrange delivery</li>
-                </ol>
+      <img 
+        src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
+        `bhutandevitraders | Product: ${productName} | Amount: Rs.${total}`
+    )}"
+        alt="Payment QR Code"
+        style="max-width: 250px; border-radius: 8px;"
+      >
     </div>
 
-            <div class="payment-actions" style="display: flex; flex-direction: column; gap: 12px;">
-                <button class="btn btn-whatsapp-large" onclick="contactWhatsapp()" style="
-                    width: 100%;
-                    padding: 14px 20px;
-                    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-                    color: white;
-                    border: none;
-                    border-radius: var(--radius);
-                    font-weight: 600;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 8px;
-                ">
+    <div>
+      <p style="font-size: 14px; color: #666;">Or contact us via WhatsApp</p>
+
+      <button 
+        class="btn btn-whatsapp" 
+        onclick="contactWhatsapp()" 
+        style="width: 100%; margin-top: 10px;"
+      >
         <i class="fab fa-whatsapp"></i> Contact via WhatsApp
       </button>
-                <button class="btn btn-secondary" onclick="closePaymentModal()" style="
-                    width: 100%;
-                    padding: 12px 20px;
-                    background: var(--light);
-                    color: var(--dark);
-                    border: 2px solid var(--gray);
-                    border-radius: var(--radius);
-                    font-weight: 600;
-                    cursor: pointer;
-                ">
-                    <i class="fas fa-times"></i> Close
-                </button>
     </div>
+
   </div>
 `;
 
-    modal.appendChild(modalContent);
-    document.body.appendChild(modal);
+    modal.innerHTML = modalContent;
+    modal.style.display = 'block';
 
-    // Generate QR code
-    const qrData = `bhutandevitraders | Product: ${productName} | Amount: Rs.${total}`;
-    const qrcodeDiv = modal.querySelector('#payment-qrcode');
-    
-    qrcodeDiv.innerHTML = '<div class="qr-loading"><div class="spinner"></div><p>Generating QR Code...</p></div>';
+    // Close modal on X click
+    const closeBtn = modal.querySelector('.close');
+    closeBtn.addEventListener('click', closePaymentModal);
 
-    // Use QRCode library if available, otherwise use image
-    setTimeout(() => {
-        if (typeof QRCode !== 'undefined') {
-            qrcodeDiv.innerHTML = '';
-            QRCode.toCanvas(qrcodeDiv, qrData, {
-                width: 280,
-                margin: 3,
-                color: {
-                    dark: '#1d3557',
-                    light: '#ffffff'
-                },
-                errorCorrectionLevel: 'M'
-            }, function (error) {
-                if (error) {
-                    console.error('QR Code generation error:', error);
-                    qrcodeDiv.innerHTML = `
-                        <div class="qr-error" style="
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            height: 100%;
-                            padding: 20px;
-                            color: var(--gray);
-                            text-align: center;
-                        ">
-                            <i class="fas fa-exclamation-triangle fa-3x" style="color: var(--warning); margin-bottom: 15px;"></i>
-                            <p>QR Code generation failed</p>
-                            <p class="qr-error-text" style="font-size: 0.9rem; margin-top: 10px;">Please contact us via WhatsApp</p>
-                        </div>
-                    `;
-                }
-            });
-        } else {
-            // Fallback to image QR code
-            qrcodeDiv.innerHTML = `
-                <img 
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(qrData)}"
-                    alt="Payment QR Code"
-                    style="max-width: 100%; height: auto; border-radius: var(--radius);"
-                >
-            `;
+    // Close modal when clicking outside
+    window.addEventListener('click', function (event) {
+        if (event.target === modal) {
+            closePaymentModal();
         }
-    }, 100);
-
-    // Show modal with animation
-    setTimeout(() => {
-        modal.style.opacity = '1';
-        modalContent.style.transform = 'scale(1)';
-    }, 10);
-
-    // Close modal handlers - attach after delay to prevent immediate closure
-    setTimeout(() => {
-        // Close button
-        const closeBtn = modal.querySelector('.close-modal');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                closePaymentModal();
-            });
-        }
-
-        // Close button in footer
-        const closeBtnFooter = modal.querySelector('.btn-secondary');
-        if (closeBtnFooter) {
-            closeBtnFooter.addEventListener('click', function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                closePaymentModal();
-            });
-        }
-
-        // Prevent clicks inside modal content from closing the modal
-        modalContent.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-
-        // Close on outside click - only if clicking the backdrop (modal itself), not the content
-        modal.addEventListener('click', function(event) {
-            // Only close if clicking directly on the modal backdrop, not on any child elements
-            if (event.target === modal) {
-                closePaymentModal();
-            }
-        });
-
-        // Close on Escape key
-        const escapeHandler = function(e) {
-            if (e.key === 'Escape') {
-                closePaymentModal();
-                document.removeEventListener('keydown', escapeHandler);
-            }
-        };
-        document.addEventListener('keydown', escapeHandler);
-    }, 300);
+    });
 }
 
 // Function to close payment modal
 function closePaymentModal() {
     const modal = document.getElementById('payment-modal');
     if (modal) {
-        const modalContent = modal.querySelector('.modal-content');
-        if (modalContent) {
-            modalContent.style.transform = 'scale(0.9)';
-        }
-        modal.style.opacity = '0';
-        setTimeout(() => {
-            modal.remove();
-        }, 300);
+        modal.style.display = 'none';
     }
-}
-
-// Function to send WhatsApp order from product card
-function sendWhatsAppOrderFromCard(productId, button) {
-    const product = window.productsData.find(p => p.id === productId);
-    if (!product) return;
-    
-    const productCard = button.closest('.product-card');
-    const quantityInput = productCard.querySelector('.quantity-input');
-    const quantity = parseInt(quantityInput.value) || 1;
-    
-    sendWhatsAppOrder(product, quantity, product.price * quantity);
-}
-
-// Function to open payment modal from product card
-function openPaymentModalFromCard(productId, button) {
-    // Stop event propagation immediately
-    if (window.event) {
-        window.event.stopPropagation();
-        window.event.preventDefault();
-    }
-    
-    const product = window.productsData.find(p => p.id === productId);
-    if (!product) return;
-    
-    const productCard = button.closest('.product-card');
-    const quantityInput = productCard.querySelector('.quantity-input');
-    const quantity = parseInt(quantityInput.value) || 1;
-    const total = product.price * quantity;
-    
-    // Use setTimeout to ensure modal opens after click event completes
-    setTimeout(() => {
-        openPaymentModal(product.name, total, product.image);
-    }, 50);
 }
 
 // Export functions to global scope
@@ -985,18 +636,16 @@ window.loadProductsData = loadProductsData;
 window.getRecentProducts = getRecentProducts;
 window.getProductsByType = getProductsByType;
 window.getProductsByCategory = getProductsByCategory;
-// window.getFeaturedProducts = getFeaturedProducts; // Not implemented yet
+window.getFeaturedProducts = getFeaturedProducts;
 window.searchProducts = searchProducts;
 window.renderProducts = renderProducts;
 window.sendWhatsAppOrder = sendWhatsAppOrder;
-window.sendWhatsAppOrderFromCard = sendWhatsAppOrderFromCard;
 window.callForProduct = callForProduct;
 window.clearSearch = clearSearch;
 window.loadProductsForPage = loadProductsForPage;
 window.initializeProductFilters = initializeProductFilters;
 window.updateProductStock = updateProductStock;
 window.openPaymentModal = openPaymentModal;
-window.openPaymentModalFromCard = openPaymentModalFromCard;
 window.closePaymentModal = closePaymentModal;
 
 // Initialize when script loads

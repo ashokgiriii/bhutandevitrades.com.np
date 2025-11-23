@@ -1,32 +1,24 @@
-// Search functionality for all pages
+// Search functionality
 class SearchManager {
     constructor() {
-        this.searchInput = document.querySelector('.search-bar input');
-        this.searchResults = document.createElement('div');
-        this.searchResults.className = 'search-results';
+        this.searchInput = document.getElementById('searchInput');
+        this.searchResults = document.getElementById('searchResults');
         this.products = [];
         this.init();
     }
 
     async init() {
         await this.loadProducts();
-        this.setupSearchBar();
         this.setupEventListeners();
     }
 
     async loadProducts() {
         try {
-            await loadProductsData();
-            this.products = window.productsData || [];
+            const response = await fetch('data/products.json');
+            const data = await response.json();
+            this.products = data.products;
         } catch (error) {
             console.error('Error loading products for search:', error);
-        }
-    }
-
-    setupSearchBar() {
-        if (this.searchInput) {
-            const searchBar = this.searchInput.parentElement;
-            searchBar.appendChild(this.searchResults);
         }
     }
 
@@ -52,13 +44,6 @@ class SearchManager {
             this.searchInput.addEventListener('focus', () => {
                 if (!this.searchInput.value) {
                     this.showAllProducts();
-                }
-            });
-
-            // Handle Enter key
-            this.searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    this.handleSearchSubmit();
                 }
             });
         }
@@ -88,7 +73,7 @@ class SearchManager {
     }
 
     showAllProducts() {
-        const recentProducts = this.products.slice(0, 8);
+        const recentProducts = this.products.slice(0, 8); // Show first 8 products
         this.displayResults(recentProducts, 'Recent Products');
     }
 
@@ -103,7 +88,7 @@ class SearchManager {
             `;
         } else {
             this.searchResults.innerHTML = results.map(product => `
-                <div class="search-result-item" onclick="window.searchManager.selectProduct(${product.id})">
+                <div class="search-result-item" onclick="this.selectProduct(${product.id})">
                     <div>
                         <strong>${product.name}</strong>
                         <div style="font-size: 0.8rem; color: var(--gray);">${product.brand} • ${product.model}</div>
@@ -122,45 +107,26 @@ class SearchManager {
         }
     }
 
-    handleSearchSubmit() {
-        const query = this.searchInput.value.trim();
-        if (query) {
-            // Redirect to categories page with search query
-            window.location.href = `categories.html?search=${encodeURIComponent(query)}`;
-        }
-    }
-
     selectProduct(productId) {
         const product = this.products.find(p => p.id === productId);
         if (product) {
-            // Navigate to product detail page
-            window.location.href = `product.html?id=${productId}`;
+            if (product.type === 'bike') {
+                window.location.href = `bike-parts.html?search=${encodeURIComponent(product.name)}`;
+            } else {
+                window.location.href = `scooter-parts.html?search=${encodeURIComponent(product.name)}`;
+            }
         }
     }
 }
 
 // Initialize search when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Only initialize if search input exists
-    const searchInput = document.querySelector('.search-bar input');
-    if (searchInput && !window.searchManager) {
-        window.searchManager = new SearchManager();
-    }
+    window.searchManager = new SearchManager();
 });
 
-// Global search function for the button
-function performSearch(query) {
+// Global function for product selection
+window.selectProduct = (productId) => {
     if (window.searchManager) {
-        if (query) {
-            window.searchManager.searchInput.value = query;
-        }
-        window.searchManager.handleSearchSubmit();
-    } else {
-        // Fallback: redirect to categories page with search query
-        const searchInput = document.querySelector('.search-bar input');
-        const searchTerm = query || (searchInput ? searchInput.value : '');
-        if (searchTerm) {
-            window.location.href = `categories.html?search=${encodeURIComponent(searchTerm)}`;
-        }
+        window.searchManager.selectProduct(productId);
     }
-}
+};

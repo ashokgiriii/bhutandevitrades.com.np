@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bike Parts | Bhutandevi Traders - Motorcycle Spare Parts</title>
+    <title>Scooter Parts | Bhutandevi Traders - Motorcycle Spare Parts</title>
     <meta
       name="description"
-      content="Browse complete range of bike spare parts at Bhutandevi Traders. Yamaha, Honda, Bajaj, TVS, KTM parts available. Free delivery in Hetauda."
+      content="Browse complete range of scooter spare parts at Bhutandevi Traders. Honda, TVS, Yamaha, Aprilia parts available. Free delivery in Hetauda."
     />
 
     <link
@@ -19,8 +19,6 @@
     />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
-    <link rel="stylesheet" href="css/animations.css" />
-    <link rel="stylesheet" href="css/premium.css" />
   </head>
   <body>
     <!-- Header -->
@@ -35,10 +33,10 @@
             <a href="categories.html" class="category-item">
               <i class="fas fa-th-large"></i> Categories
             </a>
-            <a href="bike-parts.html" class="category-item active">
+            <a href="bike-parts.html" class="category-item">
               <i class="fas fa-motorcycle"></i> Bike Parts
             </a>
-            <a href="scooter-parts.html" class="category-item">
+            <a href="scooter-parts.html" class="category-item active">
               <i class="fas fa-scooter"></i> Scooter Parts
             </a>
             <a href="#contact" class="category-item">
@@ -50,7 +48,7 @@
             <input
               type="text"
               id="searchInput"
-              placeholder="Search bike parts..."
+              placeholder="Search scooter parts..."
             />
             <button class="search-btn" onclick="performSearch()">
               <i class="fas fa-arrow-right"></i>
@@ -68,11 +66,11 @@
           <i class="fas fa-chevron-right"></i>
           <a href="categories.html">Categories</a>
           <i class="fas fa-chevron-right"></i>
-          <span>Bike Parts</span>
+          <span>Scooter Parts</span>
         </div>
-        <h1>Bike Spare Parts</h1>
+        <h1>Scooter Spare Parts</h1>
         <p>
-          Genuine parts for all major bike models. Free delivery in Hetauda
+          Genuine parts for all popular scooter models. Free delivery in Hetauda
           area.
         </p>
       </div>
@@ -82,7 +80,7 @@
     <section class="filter-section">
       <div class="container">
         <div class="filter-header">
-          <h2>Filter By Bike Model</h2>
+          <h2>Filter By Scooter Model</h2>
           <div class="filter-actions">
             <button class="filter-reset" onclick="resetFilters()">
               <i class="fas fa-refresh"></i> Reset Filters
@@ -97,35 +95,32 @@
           <button class="filter-tab active" data-category="all">
             <i class="fas fa-th-large"></i> All Models
           </button>
-          <button class="filter-tab" data-category="fz">
-            <i class="fas fa-bolt"></i> FZ Series
+          <button class="filter-tab" data-category="dio">
+            <i class="fas fa-scooter"></i> Honda Dio
           </button>
-          <button class="filter-tab" data-category="pulsar">
-            <i class="fas fa-bolt"></i> Pulsar Series
+          <button class="filter-tab" data-category="activa">
+            <i class="fas fa-scooter"></i> Honda Activa
           </button>
-          <button class="filter-tab" data-category="ns200">
-            <i class="fas fa-bolt"></i> NS200
+          <button class="filter-tab" data-category="ntorq">
+            <i class="fas fa-scooter"></i> TVS NTorq
           </button>
-          <button class="filter-tab" data-category="apache">
-            <i class="fas fa-bolt"></i> Apache
+          <button class="filter-tab" data-category="jupiter">
+            <i class="fas fa-scooter"></i> TVS Jupiter
           </button>
-          <button class="filter-tab" data-category="shine">
-            <i class="fas fa-bolt"></i> Honda Shine
+          <button class="filter-tab" data-category="rayzr">
+            <i class="fas fa-scooter"></i> Yamaha RayZR
           </button>
-          <button class="filter-tab" data-category="unicorn">
-            <i class="fas fa-bolt"></i> Unicorn
+          <button class="filter-tab" data-category="aprilia">
+            <i class="fas fa-scooter"></i> Aprilia
           </button>
-          <button class="filter-tab" data-category="bullet">
-            <i class="fas fa-bolt"></i> Bullet
+          <button class="filter-tab" data-category="access">
+            <i class="fas fa-scooter"></i> Suzuki Access
           </button>
-          <button class="filter-tab" data-category="ktm">
-            <i class="fas fa-bolt"></i> KTM
+          <button class="filter-tab" data-category="burgman">
+            <i class="fas fa-scooter"></i> Suzuki Burgman
           </button>
-          <button class="filter-tab" data-category="mt">
-            <i class="fas fa-bolt"></i> MT Series
-          </button>
-          <button class="filter-tab" data-category="r15">
-            <i class="fas fa-bolt"></i> R15
+          <button class="filter-tab" data-category="pep">
+            <i class="fas fa-scooter"></i> Honda Pep+
           </button>
         </div>
 
@@ -136,10 +131,10 @@
             <select id="partTypeFilter" onchange="applyFilters()">
               <option value="all">All Parts</option>
               <option value="engine">Engine Parts</option>
+              <option value="cvt">CVT System</option>
               <option value="brake">Brake Systems</option>
               <option value="electrical">Electrical</option>
               <option value="suspension">Suspension</option>
-              <option value="transmission">Transmission</option>
               <option value="body">Body Parts</option>
             </select>
           </div>
@@ -172,18 +167,18 @@
     <section class="products-section">
       <div class="container">
         <div class="products-header">
-          <h2>Bike Spare Parts</h2>
-          <p>High-quality genuine parts for optimal performance</p>
+          <h2>Scooter Spare Parts</h2>
+          <p>Reliable parts for smooth scooter performance</p>
         </div>
 
         <!-- Loading State -->
         <div id="loadingState" class="loading-state">
           <i class="fas fa-spinner fa-spin"></i>
-          <p>Loading bike parts...</p>
+          <p>Loading scooter parts...</p>
         </div>
 
         <!-- Products Grid -->
-        <div class="products-grid" id="bike-parts-container">
+        <div class="products-grid" id="scooter-parts-container">
           <!-- Products will be dynamically loaded here -->
         </div>
 
@@ -211,45 +206,176 @@
       </div>
     </section>
 
-    <!-- Popular Brands Section -->
-    <section class="brands-showcase">
+    <!-- Scooter Models Info -->
+    <section class="models-info">
       <div class="container">
         <div class="section-title">
-          <h2>Supported Bike Brands</h2>
-          <p>We carry parts for all major motorcycle brands</p>
+          <h2>Popular Scooter Models</h2>
+          <p>We support all major scooter brands available in Nepal</p>
         </div>
-        <div class="brands-grid">
-          <div class="brand-item">
-            <i class="fas fa-bolt" style="color: #0066b3"></i>
-            <span>Yamaha</span>
+
+        <div class="models-grid">
+          <div class="model-info-card">
+            <div class="model-icon">
+              <i class="fas fa-scooter" style="color: #e40521"></i>
+            </div>
+            <h4>Honda Dio</h4>
+            <p>
+              Most popular sports scooter with excellent mileage and performance
+            </p>
+            <div class="model-features">
+              <span>CVT Belt</span>
+              <span>Air Filter</span>
+              <span>Brake Pads</span>
+            </div>
           </div>
-          <div class="brand-item">
-            <i class="fas fa-bolt" style="color: #e40521"></i>
-            <span>Honda</span>
+
+          <div class="model-info-card">
+            <div class="model-icon">
+              <i class="fas fa-scooter" style="color: #e40521"></i>
+            </div>
+            <h4>Honda Activa</h4>
+            <p>
+              India's best-selling scooter, known for reliability and comfort
+            </p>
+            <div class="model-features">
+              <span>Shock Absorbers</span>
+              <span>Clutch Assembly</span>
+              <span>Body Parts</span>
+            </div>
           </div>
-          <div class="brand-item">
-            <i class="fas fa-bolt" style="color: #ff0000"></i>
-            <span>Bajaj</span>
+
+          <div class="model-info-card">
+            <div class="model-icon">
+              <i class="fas fa-scooter" style="color: #e4002b"></i>
+            </div>
+            <h4>TVS NTorq</h4>
+            <p>Performance scooter with sporty design and advanced features</p>
+            <div class="model-features">
+              <span>Racing Kit</span>
+              <span>Exhaust System</span>
+              <span>Digital Parts</span>
+            </div>
           </div>
-          <div class="brand-item">
-            <i class="fas fa-bolt" style="color: #e4002b"></i>
-            <span>TVS</span>
+
+          <div class="model-info-card">
+            <div class="model-icon">
+              <i class="fas fa-scooter" style="color: #0066b3"></i>
+            </div>
+            <h4>Yamaha RayZR</h4>
+            <p>
+              Stylish scooter with Blue Core technology for better fuel
+              efficiency
+            </p>
+            <div class="model-features">
+              <span>Fuel Injector</span>
+              <span>Spark Plug</span>
+              <span>Body Panels</span>
+            </div>
           </div>
-          <div class="brand-item">
-            <i class="fas fa-bolt" style="color: #ff6600"></i>
-            <span>KTM</span>
+
+          <div class="model-info-card">
+            <div class="model-icon">
+              <i class="fas fa-scooter" style="color: #ff0000"></i>
+            </div>
+            <h4>Aprilia SR150</h4>
+            <p>Premium sports scooter with Italian design and performance</p>
+            <div class="model-features">
+              <span>Performance Parts</span>
+              <span>Brake System</span>
+              <span>Accessories</span>
+            </div>
           </div>
-          <div class="brand-item">
-            <i class="fas fa-bolt" style="color: #000000"></i>
-            <span>Royal Enfield</span>
+
+          <div class="model-info-card">
+            <div class="model-icon">
+              <i class="fas fa-scooter" style="color: #0055a4"></i>
+            </div>
+            <h4>Suzuki Access</h4>
+            <p>Reliable scooter with smooth performance and low maintenance</p>
+            <div class="model-features">
+              <span>SEP Engine Parts</span>
+              <span>Transmission</span>
+              <span>Electrical</span>
+            </div>
           </div>
-          <div class="brand-item">
-            <i class="fas fa-bolt" style="color: #0055a4"></i>
-            <span>Suzuki</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Common Scooter Parts -->
+    <section class="common-parts">
+      <div class="container">
+        <div class="section-title">
+          <h2>Common Scooter Parts</h2>
+          <p>Frequently replaced parts for all scooter models</p>
+        </div>
+
+        <div class="parts-categories">
+          <div class="parts-category">
+            <h4>🔄 CVT System</h4>
+            <ul>
+              <li>Drive Belt (CVT Belt)</li>
+              <li>Clutch Assembly</li>
+              <li>Variator Set</li>
+              <li>Drive Face</li>
+              <li>Clutch Bell</li>
+            </ul>
           </div>
-          <div class="brand-item">
-            <i class="fas fa-bolt" style="color: #ff0000"></i>
-            <span>Hero</span>
+
+          <div class="parts-category">
+            <h4>⚙️ Engine Parts</h4>
+            <ul>
+              <li>Piston Kit</li>
+              <li>Cylinder Kit</li>
+              <li>Valve Set</li>
+              <li>Camshaft</li>
+              <li>Timing Chain</li>
+            </ul>
+          </div>
+
+          <div class="parts-category">
+            <h4>🛑 Brake System</h4>
+            <ul>
+              <li>Brake Pads</li>
+              <li>Brake Disc</li>
+              <li>Brake Caliper</li>
+              <li>Brake Master Cylinder</li>
+              <li>Brake Cable</li>
+            </ul>
+          </div>
+
+          <div class="parts-category">
+            <h4>⚡ Electrical</h4>
+            <ul>
+              <li>Battery</li>
+              <li>Spark Plug</li>
+              <li>Ignition Coil</li>
+              <li>Stator Assembly</li>
+              <li>Regulator Rectifier</li>
+            </ul>
+          </div>
+
+          <div class="parts-category">
+            <h4>🚗 Suspension</h4>
+            <ul>
+              <li>Front Shock Absorber</li>
+              <li>Rear Shock Absorber</li>
+              <li>Front Fork Assembly</li>
+              <li>Swing Arm</li>
+              <li>Wheel Assembly</li>
+            </ul>
+          </div>
+
+          <div class="parts-category">
+            <h4>🎨 Body Parts</h4>
+            <ul>
+              <li>Front Mask</li>
+              <li>Side Panels</li>
+              <li>Seat Cover</li>
+              <li>Footboard Mat</li>
+              <li>Mirrors</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -262,22 +388,22 @@
           <div class="service-card">
             <i class="fas fa-tools"></i>
             <h4>Expert Installation</h4>
-            <p>Professional installation services available for all parts</p>
+            <p>Professional installation services for all scooter parts</p>
           </div>
           <div class="service-card">
             <i class="fas fa-shield-alt"></i>
-            <h4>Quality Guarantee</h4>
-            <p>100% genuine parts with manufacturer warranty</p>
+            <h4>Genuine Parts</h4>
+            <p>100% authentic parts with manufacturer warranty</p>
           </div>
           <div class="service-card">
-            <i class="fas fa-clock"></i>
-            <h4>Quick Delivery</h4>
-            <p>Same day delivery in Hetauda for orders before 4 PM</p>
+            <i class="fas fa-bolt"></i>
+            <h4>Quick Service</h4>
+            <p>Fast delivery and installation for urgent requirements</p>
           </div>
           <div class="service-card">
             <i class="fas fa-headset"></i>
             <h4>Technical Support</h4>
-            <p>Expert advice and technical guidance available</p>
+            <p>Expert advice for scooter maintenance and repairs</p>
           </div>
         </div>
       </div>
@@ -288,22 +414,22 @@
       <div class="container">
         <div class="cta-content">
           <div class="cta-text">
-            <h3>Need Help Choosing the Right Part?</h3>
+            <h3>Need Scooter Parts Urgently?</h3>
             <p>
-              Our experts are available to help you select the perfect parts for
-              your bike
+              We maintain ready stock of most common scooter parts. Call for
+              immediate assistance.
             </p>
           </div>
           <div class="cta-buttons">
             <a href="tel:+9779841000000" class="cta-button large primary">
-              <i class="fas fa-phone"></i> Call Expert: 9841XXXXXX
+              <i class="fas fa-phone"></i> Call Now: 9841XXXXXX
             </a>
             <a
               href="https://wa.me/9779841000000"
               class="cta-button large whatsapp"
               target="_blank"
             >
-              <i class="fab fa-whatsapp"></i> WhatsApp Consultation
+              <i class="fab fa-whatsapp"></i> WhatsApp Parts List
             </a>
           </div>
         </div>
@@ -431,7 +557,7 @@
             </p>
           </div>
           <div class="footer-notes">
-            <p>🏍️ Trusted Motorcycle Parts Supplier in Hetauda</p>
+            <p>🛵 Trusted Scooter Parts Supplier in Hetauda</p>
           </div>
         </div>
       </div>
@@ -483,11 +609,9 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
     <script src="js/products.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/premium.js"></script>
 
     <script>
-      // Bike parts page specific JavaScript
+      // Scooter parts page specific JavaScript
       let currentProducts = [];
       let filteredProducts = [];
       let displayedCount = 12;
@@ -497,11 +621,11 @@
       let currentSort = "name";
 
       document.addEventListener("DOMContentLoaded", async function () {
-        await initializeBikePartsPage();
+        await initializeScooterPartsPage();
         setupEventListeners();
       });
 
-      async function initializeBikePartsPage() {
+      async function initializeScooterPartsPage() {
         // Show loading state
         showLoadingState(true);
 
@@ -571,7 +695,7 @@
 
         // Filter products
         filteredProducts = window.productsData.filter((product) => {
-          if (product.type !== "bike") return false;
+          if (product.type !== "scooter") return false;
 
           // Category filter
           if (currentCategory !== "all" && product.category !== currentCategory)
@@ -591,15 +715,15 @@
           )
             return false;
 
-          // Part type filter (simulated based on features/description)
+          // Part type filter for scooters
           if (currentPartType !== "all") {
             const partTypeMap = {
               engine: ["engine", "piston", "cylinder", "valve", "camshaft"],
+              cvt: ["cvt", "belt", "clutch", "variator", "drive"],
               brake: ["brake", "pad", "disc", "caliper"],
               electrical: ["battery", "spark", "coil", "wire", "electrical"],
               suspension: ["shock", "suspension", "fork", "spring"],
-              transmission: ["clutch", "gear", "transmission", "sprocket"],
-              body: ["fairing", "body", "seat", "handlebar", "footpeg"],
+              body: ["fairing", "body", "seat", "panel", "mirror"],
             };
 
             const keywords = partTypeMap[currentPartType];
@@ -664,7 +788,7 @@
       }
 
       function displayProducts() {
-        const container = document.getElementById("bike-parts-container");
+        const container = document.getElementById("scooter-parts-container");
         const noResults = document.getElementById("noResults");
         const loadMoreBtn = document.getElementById("loadMore");
 
@@ -696,7 +820,7 @@
         displayProducts();
 
         // Scroll to newly loaded products
-        const container = document.getElementById("bike-parts-container");
+        const container = document.getElementById("scooter-parts-container");
         container.lastElementChild.scrollIntoView({
           behavior: "smooth",
           block: "nearest",
@@ -710,7 +834,7 @@
 
       function showLoadingState(show) {
         const loadingState = document.getElementById("loadingState");
-        const container = document.getElementById("bike-parts-container");
+        const container = document.getElementById("scooter-parts-container");
 
         if (show) {
           loadingState.style.display = "block";

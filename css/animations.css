@@ -1,0 +1,490 @@
+/* Smooth Animations and UX Enhancements */
+
+/* Toast Notifications */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 16px 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    min-width: 300px;
+    max-width: 400px;
+    transform: translateX(400px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.toast i {
+    font-size: 1.2rem;
+}
+
+.toast-success {
+    border-left: 4px solid var(--success);
+}
+
+.toast-success i {
+    color: var(--success);
+}
+
+.toast-error {
+    border-left: 4px solid var(--primary);
+}
+
+.toast-error i {
+    color: var(--primary);
+}
+
+.toast-warning {
+    border-left: 4px solid var(--warning);
+}
+
+.toast-warning i {
+    color: var(--warning);
+}
+
+.toast-info {
+    border-left: 4px solid var(--accent);
+}
+
+.toast-info i {
+    color: var(--accent);
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: var(--gray);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.toast-close:hover {
+    background: var(--light);
+    color: var(--dark);
+}
+
+/* Scroll Animations */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Skeleton Loaders */
+.skeleton-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.skeleton-image {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite;
+}
+
+.skeleton-content {
+    padding: 20px;
+}
+
+.skeleton-line {
+    height: 12px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    animation: skeleton-shimmer 1.5s infinite;
+}
+
+.skeleton-title {
+    width: 80%;
+    height: 20px;
+}
+
+.skeleton-text {
+    width: 100%;
+}
+
+.skeleton-text.short {
+    width: 60%;
+}
+
+.skeleton-price {
+    width: 40%;
+    height: 24px;
+    margin-top: 10px;
+}
+
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Ripple Effect */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(0);
+    animation: ripple-animation 0.6s ease-out;
+    pointer-events: none;
+}
+
+@keyframes ripple-animation {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Enhanced Product Card Hover */
+.product-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Search Bar Enhancements */
+.search-bar {
+    transition: all 0.3s ease;
+}
+
+.search-bar.focused {
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+    transform: scale(1.02);
+}
+
+.search-bar.searching::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary);
+    animation: search-progress 2s infinite;
+}
+
+@keyframes search-progress {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Smooth Scroll to Top */
+.scroll-to-top {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-to-top:hover {
+  transform: scale(1.1) translateY(-3px);
+  box-shadow: 0 8px 25px rgba(230, 57, 70, 0.4);
+}
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Image Lazy Loading */
+img[data-src] {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+img[data-src].loaded {
+    opacity: 1;
+}
+
+/* Button Enhancements */
+.btn, .cta-button, .btn-action {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:active, .cta-button:active, .btn-action:active {
+    transform: scale(0.98);
+}
+
+/* Loading State */
+.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+/* Smooth Page Transitions */
+body {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Enhanced Floating Buttons */
+.floating-actions {
+    animation: slideInRight 0.5s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.whatsapp-float, .call-float {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.whatsapp-float:hover, .call-float:hover {
+    transform: scale(1.15) translateY(-5px);
+}
+
+/* Modal Animations */
+.modal {
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Category Card Enhancements */
+.category-quick-card, .category-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-quick-card:hover, .category-card:hover {
+    transform: translateY(-10px) scale(1.03);
+}
+
+/* Smooth Number Counter Animation */
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Pulse Animation for Important Elements */
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+/* Shake Animation for Errors */
+.shake {
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+/* Smooth Input Focus */
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+    transform: scale(1.01);
+    transition: all 0.3s ease;
+}
+
+/* Mobile Touch Enhancements */
+@media (max-width: 768px) {
+    .product-card:active {
+        transform: scale(0.98);
+    }
+    
+    .btn:active, .cta-button:active {
+        transform: scale(0.95);
+    }
+    
+    .toast {
+        min-width: calc(100% - 40px);
+        max-width: calc(100% - 40px);
+        right: 20px;
+        left: 20px;
+    }
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 3px solid rgba(230, 57, 70, 0.1);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Smooth Quantity Selector */
+.quantity-btn {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.quantity-btn:active {
+    transform: scale(0.9);
+}
+
+/* Enhanced Product Image */
+.product-image {
+    overflow: hidden;
+    position: relative;
+}
+
+.product-image img {
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.1);
+}
+
+/* Smooth Filter Transitions */
+.filter-btn, .filter-tab {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filter-btn:hover, .filter-tab:hover {
+    transform: translateY(-2px);
+}
+
+/* Progress Bar */
+.progress-bar {
+    height: 4px;
+    background: var(--light);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--primary);
+    animation: progress 2s infinite;
+}
+
+@keyframes progress {
+    0% {
+        width: 0%;
+    }
+    50% {
+        width: 70%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
